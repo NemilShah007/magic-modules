@@ -1714,9 +1714,6 @@ func TestAccComputeRegionInstanceTemplate_schedulingPreemptionNoticeDuration(t *
 	var instanceTemplate compute.InstanceTemplate
 	instanceName := fmt.Sprintf("tf-test-instance-%s", acctest.RandString(t, 10))
 
-	var expectedPreemptionNoticeDuration = compute.Duration{}
-	expectedPreemptionNoticeDuration.Seconds = 120
-
 	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
@@ -1728,6 +1725,7 @@ func TestAccComputeRegionInstanceTemplate_schedulingPreemptionNoticeDuration(t *
 					testAccCheckComputeRegionInstanceTemplateExists(
 						t, "google_compute_region_instance_template.foobar", &instanceTemplate),
 					resource.TestCheckResourceAttr("google_compute_region_instance_template.foobar", "scheduling.0.preemption_notice_duration.0.seconds", "120"),
+					resource.TestCheckResourceAttr("google_compute_region_instance_template.foobar", "scheduling.0.preemption_notice_duration.0.nanos", "0"),
 				),
 			},
 			{
@@ -5052,6 +5050,7 @@ resource "google_compute_region_instance_template" "foobar" {
 	instance_termination_action = "STOP"
     preemption_notice_duration {
       seconds = 120
+	  nanos = 0
     }
   }
 

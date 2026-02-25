@@ -4664,6 +4664,7 @@ func TestAccComputeInstance_preemptionNoticeDuration(t *testing.T) {
 					testAccCheckComputeInstanceExists(
 						t, "google_compute_instance.foobar", &instance),
 					resource.TestCheckResourceAttr("google_compute_instance.foobar", "scheduling.0.preemption_notice_duration.0.seconds", "120"),
+					resource.TestCheckResourceAttr("google_compute_instance.foobar", "scheduling.0.preemption_notice_duration.0.nanos", "0"),
 				),
 			},
 			computeInstanceImportStep("us-central1-a", instanceName, []string{}),
@@ -5092,6 +5093,7 @@ resource "google_compute_instance" "foobar" {
 	instance_termination_action = "STOP"
     preemption_notice_duration {
       seconds = 120
+	  nanos = 0
     }
   }
 }
